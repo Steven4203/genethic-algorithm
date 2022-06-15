@@ -1,0 +1,15 @@
+{
+  "name": "crossingover",
+  "version": "1.0.0",
+  "description": "",
+  "main": "crossingover.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "prettier": "^2.7.0",
+    "random-string-gen": "^1.1.4"
+  }
+}
