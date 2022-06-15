@@ -1,9 +1,9 @@
 var randomstring = require('random-string-gen')
 
-const iterationNumber = 1
+const iterationNumber = 50
 const populationNumber = 10
-const crossingOverRatio = 0.3
-const mutationRatio = 1
+const crossingOverRatio = 0.7
+const mutationRatio = 0.01
 const bitSize = 6
 
 function randomizeArrays(populationNumber) {
@@ -67,6 +67,10 @@ function crossingOver(arr, crossingOverRatio, bitSize) {
     let arrRouletteRatioSum = 0
     let randomCrossPoint = Math.floor(Math.random() * bitSize + 1)
 
+    if (randomCrossPoint == 0 || randomCrossPoint == bitSize) {
+        randomCrossPoint = bitSize / 2
+    }
+
     let crossingOverNumber = Math.round(arr.length * crossingOverRatio)
 
     if (crossingOverNumber % 2 == 1) {
@@ -114,13 +118,54 @@ function crossingOver(arr, crossingOverRatio, bitSize) {
             }
         }
     }
+    //console.log(randomMembers)
 
     for (let i = 0; i < randomMembers.length / 2; i++) {
-        let temp = arr[randomMembers[i]].substring(randomCrossPoint);
-        let temp2 = arr[randomMembers[randomMembers-i-1]].substring(randomCrossPoint)
-        console.log(temp);
-        console.log(temp2);
+        //TR: Stringleri
+        let temp = arr[randomMembers[i]].substring(randomCrossPoint)
+        let temp2 =
+            arr[randomMembers[randomMembers.length - i - 1]].substring(
+                randomCrossPoint
+            )
+
+        //console.log(i + '.eleman => ' + temp)
+        //console.log(randomMembers.length - i - 1 + '.eleman => ' + temp2)
+
+        let tempBeginning = arr[randomMembers[i]].substring(0, randomCrossPoint)
+        let temp2Beginning = arr[
+            randomMembers[randomMembers.length - i - 1]
+        ].substring(0, randomCrossPoint)
+
+        arr[randomMembers[i]] = tempBeginning + temp2
+        arr[randomMembers[randomMembers.length - i - 1]] = temp2Beginning + temp
     }
+    return arr
+}
+
+function mutation(arr, mutationRatio, bitSize) {
+    let mutationSize = Math.round(bitSize * mutationRatio * arr.length)
+
+    if (mutationSize == 0) {
+        mutationRatio += 1
+    }
+
+    let mutatedMember = Math.floor(Math.random() * arr.length)
+
+    let randomBitNumber = Math.floor(Math.random() * bitSize)
+
+    if (arr[mutatedMember].charAt(randomBitNumber) == '0') {
+        arr[mutatedMember] =
+            arr[mutatedMember].substring(0, randomBitNumber) +
+            '1' +
+            arr[mutatedMember].substring(randomBitNumber + 1)
+    } else {
+        arr[mutatedMember] =
+            arr[mutatedMember].substring(0, randomBitNumber) +
+            '0' +
+            arr[mutatedMember].substring(randomBitNumber + 1)
+    }
+
+    return arr
 }
 
 function main() {
@@ -132,10 +177,21 @@ function main() {
     }
 
     let arr = randomizeArrays(populationNumber)
-    console.log(arr)
     bestFit = calculateFitnessScores(arr, populationNumber, bestFit)
-    //console.log(bestFit)
-    crossingOver(arr, crossingOverRatio, bitSize)
+    console.log('1. Fitness Sonucu\n' + '----------------------------------')
+    console.log(bestFit)
+    console.log('\n\n')
+
+    for (let i = 0; i < iterationNumber - 1; i++) {
+        arr = crossingOver(arr, crossingOverRatio, bitSize)
+        arr = mutation(arr, mutationRatio, bitSize)
+        bestFit = calculateFitnessScores(arr, populationNumber, bestFit)
+        console.log(
+            (i+2) + '. Fitness Sonucu\n' + '----------------------------------'
+        )
+        console.log(bestFit)
+        console.log('\n\n')
+    }
 }
 
 main()
