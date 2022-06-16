@@ -1,5 +1,5 @@
 /*
-    [TR] Rastgele string oluşturma package ı ekleme 
+    [TR] Rastgele string oluşturma package ı eklenir.
 */
 var randomstring = require('random-string-gen')
 /*
@@ -76,8 +76,9 @@ function calculateFitnessScores(arr, populationNumber, bestFit) {
 */
 function crossingOver(arr, crossingOverRatio, bitSize) {
     /*
-        [TR] gerekli hesaplamalar için değişkenler tanımlanır ve kaç adet çaprazlama yapılacağı,
-        çaprazlamanın başlayacağı bitin hangisi olacağı belirlenir.
+        [TR] gerekli hesaplamalar için değişkenler tanımlanır ve kaç adet 
+        çaprazlama yapılacağı, çaprazlamanın başlayacağı bitin hangisi 
+        olacağı belirlenir.
     */
     let arrSum = 0
     let arrRouletteRatio = []
@@ -102,10 +103,10 @@ function crossingOver(arr, crossingOverRatio, bitSize) {
     let rouletteRatio = 100 / arrSum
 
     /*
-        [TR] Üyelerin sayılarının büyüklüklerine göre yüzdelik oranlarının belirlendiği
-        coding işlemi yapılır. Burada üyelerin hangi aralıklarda yer alacağı belirlenir.
-        Örneğin 1 - 2 - 3 - 4 - 5 sayıları yaklaşık %6.66 - %13.32 - %19,98 - %26,64 - %33,3 
-        yüzdelik oranlarına sahip olur.
+        [TR] Üyelerin sayılarının büyüklüklerine göre yüzdelik oranlarının 
+        belirlendiği coding işlemi yapılır. Burada üyelerin hangi aralıklarda 
+        yer alacağı belirlenir. Örneğin 1 - 2 - 3 - 4 - 5 sayıları yaklaşık 
+        %6.66 - %13.32 - %19,98 - %26,64 - %33,3 yüzdelik oranlarına sahip olur.
     */
     for (let i = 0; i < arr.length; i++) {
         let memberChance = parseInt(parseInt(arr[i], 2) * rouletteRatio)
@@ -117,8 +118,9 @@ function crossingOver(arr, crossingOverRatio, bitSize) {
     }
 
     /*
-        [TR] Oluşturulan rulet oranlarına göre rastgele sayılar seçilerek hangi üyelerin
-        seçileceği kararlaştırılır ve randomMembers arrayine eklenir
+        [TR] Oluşturulan rulet oranlarına göre rastgele sayılar seçilerek 
+        hangi üyelerin seçileceği kararlaştırılır ve randomMembers arrayine 
+        eklenir.
     */
     for (let i = 0; i < crossingOverNumber; i++) {
         let randomNumber = Math.floor(Math.random() * 101)
@@ -148,8 +150,9 @@ function crossingOver(arr, crossingOverRatio, bitSize) {
     }
 
     /*
-        [TR] Çaprazlama için seçilmiş üyeler karşılıklı olarak seçilir ve çaprazlama işlemi gerçekleşir.
-        Örneğin 0,1,2,3 numaralı üyeler için 0-3 ve 1-2 çarpazlaması yapılır
+        [TR] Çaprazlama için seçilmiş üyeler karşılıklı olarak seçilir.
+        ve çaprazlama işlemi gerçekleşir. Örneğin 0,1,2,3 numaralı 
+        üyeler için 0-3 ve 1-2 çarpazlaması yapılır.
     */
     for (let i = 0; i < randomMembers.length / 2; i++) {
         let temp = arr[randomMembers[i]].substring(randomCrossPoint)
@@ -177,7 +180,7 @@ function crossingOver(arr, crossingOverRatio, bitSize) {
 */
 function mutation(arr, mutationRatio, bitSize) {
     /*
-        [TR] Mutasyon yapılacak üye sayısı hesaplanır 
+        [TR] Mutasyon yapılacak üye sayısı hesaplanır.
     */
     let mutationSize = Math.round(bitSize * mutationRatio * arr.length)
 
@@ -187,14 +190,15 @@ function mutation(arr, mutationRatio, bitSize) {
 
     for (let i = 0; i < mutationSize; i++) {
         /*
-            [TR] Mutasyona uğrayacak üyeler ve bit sayısı belirlenir
+            [TR] Mutasyona uğrayacak üyeler ve bit sayısı belirlenir.
         */
         let mutatedMember = Math.floor(Math.random() * arr.length)
 
         let randomBitNumber = Math.floor(Math.random() * bitSize)
 
         /*
-            [TR] Mutasyon işlemi olarak eğer 0 ise 1 yap, eğer 1 ise 0 yap işlemi gerçekleşir
+            [TR] Mutasyon işlemi olarak eğer 0 ise 1 yap, eğer 1 ise 
+            0 yap işlemi gerçekleşir.
         */
         if (arr[mutatedMember].charAt(randomBitNumber) == '0') {
             arr[mutatedMember] =
@@ -221,7 +225,8 @@ function main() {
     }
 
     /*
-        [TR] İlk olarak rastgele üyeler oluşturulur ve fitness skoru hesaplanır
+        [TR] İlk olarak rastgele üyeler oluşturulur ve fitness 
+        skoru hesaplanır.
     */
     let arr = randomizeArrays(populationNumber)
     bestFit = calculateFitnessScores(arr, populationNumber, bestFit)
@@ -230,7 +235,8 @@ function main() {
     console.log('\n\n')
 
     /*
-        [TR] Üyeler crossing-over ve mutasyon geçirerek iterasyon sayısına göre hesaplanmaya devam eder
+        [TR] Üyeler crossing-over ve mutasyon geçirerek iterasyon 
+        sayısına göre hesaplanmaya devam eder.
     */
     for (let i = 0; i < iterationNumber - 1; i++) {
         arr = crossingOver(arr, crossingOverRatio, bitSize)
